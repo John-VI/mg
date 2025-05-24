@@ -33,7 +33,7 @@
 #include <sys/time.h>
 #include <signal.h>
 #include <stdio.h>
-#include "terminfo_term.h"
+#include <term.h>
 #include <unistd.h>
 
 #include "def.h"

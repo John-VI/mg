@@ -19,5 +19,5 @@
 
 /* struct stat compatibilty */
 #define st_atim st_atimespec
-#define st_mtim st_mtimespec
+#define st_mtim st_mtim
 #define st_ctim st_ctimespec

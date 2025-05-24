@@ -52,12 +52,12 @@ char		 pat[NPAT];			/* pattern		*/
 
 static void	 edinit(struct buffer *);
 static void	 pty_init(void);
-static __dead void usage(void);
+static void usage(void);
 
 extern char	*__progname;
 extern void     closetags(void);
 
-static __dead void
+static void
 usage(void)
 {
 	fprintf(stderr, "usage: %s [-nR] [-b file] [-f mode] [-u file] "

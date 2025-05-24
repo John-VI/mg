@@ -12,7 +12,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "terminfo_term.h"
+#include <term.h>
 
 #include "def.h"
 #include "kbd.h"

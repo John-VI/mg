@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "terminfo_term.h"
+#include <term.h>
 
 #include "def.h"
 #include "kbd.h"
@@ -92,6 +92,8 @@ struct score *score;			/* [NROW * NROW] */
 
 static int	 linenos = TRUE;
 static int	 colnos = FALSE;
+// KDG_CUSTOM
+static int       wc     = FALSE;
 
 /* Is macro recording enabled? */
 extern int macrodef;
@@ -122,6 +124,20 @@ colnotoggle(int f, int n)
 		colnos = n > 0;
 	else
 		colnos = !colnos;
+
+	sgarbf = TRUE;
+
+	return (TRUE);
+}
+
+// KDG_CUSTOM
+int
+wctoggle(int f, int n)
+{
+	if (f & FFARG)
+		wc = n > 0;
+	else
+		wc = !wc;
 
 	sgarbf = TRUE;
 
@@ -418,7 +434,7 @@ update(int modelinecolor)
 			wp = wp->w_wndp;
 		}
 	}
-	if (linenos || colnos) {
+	if (linenos || colnos || wc) {
 		wp = wheadp;
 		while (wp != NULL) {
 			wp->w_rflag |= WFMODE;
@@ -837,14 +853,27 @@ modeline(struct mgwin *wp, int modelinecolor)
 	vtputc(')', wp);
 	++n;
 
-	if (linenos && colnos)
+	// KDG CUSTOM
+	if (linenos && colnos && wc)
+		len = snprintf(sl, sizeof(sl), "--L%d--C%d--wc%d-%d",
+		    wp->w_dotline, getcolpos(wp), wordcount(wp->w_bufp), wp->w_bufp->b_lines);
+	else if (linenos && colnos)
 		len = snprintf(sl, sizeof(sl), "--L%d--C%d", wp->w_dotline,
 		    getcolpos(wp));
+	else if (linenos && wc)
+		len = snprintf(sl, sizeof(sl), "--L%d--wc%d-%d", wp->w_dotline,
+		    wordcount(wp->w_bufp), wp->w_bufp->b_lines);
+	else if (colnos && wc)
+		len = snprintf(sl, sizeof(sl), "--C%d--wc%d-%d", getcolpos(wp),
+		    wordcount(wp->w_bufp), wp->w_bufp->b_lines);
 	else if (linenos)
 		len = snprintf(sl, sizeof(sl), "--L%d", wp->w_dotline);
-	else if (colnos)
-		len = snprintf(sl, sizeof(sl), "--C%d", getcolpos(wp));
-	if ((linenos || colnos) && len < sizeof(sl) && len != -1)
+        else if (colnos)
+	        len = snprintf(sl, sizeof(sl), "--C%d", getcolpos(wp));
+	else if (wc)
+		len = snprintf(sl, sizeof(sl), "--wc%d-%d",
+		    wordcount(wp->w_bufp), wp->w_bufp->b_lines);
+	if ((linenos || colnos || wc) && len < sizeof(sl) && len != -1)
 		n += vtputs(sl, wp);
 
 	while (n < ncol) {			/* Pad out.		 */

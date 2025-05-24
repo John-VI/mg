@@ -144,6 +144,7 @@ static struct funmap functnames[] = {
 	{delfword, "kill-word", 1},
 	{toggleleavetmp, "leave-tmpdir-backups", 0},
 	{linenotoggle, "line-number-mode", 0},
+	{wctoggle, "wc-mode", 0},
 	{listbuffers, "list-buffers", 0},
 	{evalfile, "load", 1},
 	{localbind, "local-set-key", 1},

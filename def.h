@@ -470,6 +470,8 @@ void		 vttidy(void);
 void		 update(int);
 int		 linenotoggle(int, int);
 int		 colnotoggle(int, int);
+// KDG_CUSTOM
+int              wctoggle(int, int);
 
 /* echo.c X */
 void		 eerase(void);
@@ -744,6 +746,10 @@ void		 dobeep(void);
 /* interpreter.c */
 int		 foundparen(char *, int, int);
 void		 cleanup(void);
+
+// KDG CUSTOM
+/* kdg.c */
+int              wordcount(struct buffer *);
 
 /*
  * Externals.
