@@ -2,7 +2,7 @@
 .POSIX:
 
 CC =		cc
-CFLAGS =	-ggdb -O2 -DREGEX -w -Ibsd -Wall
+CFLAGS =	-g -O2 -DREGEX -w -D_GNU_SOURCE -D__dead="__attribute__((__noreturn__))" -Dst_mtimespec=st_mtim
 PREFIX =	/usr/local
 MANDIR =	/usr/local/man
 
@@ -19,7 +19,7 @@ OBJS =	autoexec.o basic.o bell.o buffer.o cinfo.o dir.o display.o \
 all: ${PROG}
 
 ${PROG}: ${OBJS}
-	${CC} ${LDFLAGS} -o ${PROG} ${OBJS} -lncursesw
+	${CC} ${LDFLAGS} -o ${PROG} ${OBJS} -lncursesw -lutil
 
 install:
 	install -d ${DESTDIR}${PREFIX}/bin
