@@ -20,7 +20,7 @@ wordcount(struct buffer *b)
 		if (cline->l_used >= 1) {
 			char *sp = cline->l_text;
 			for (int j = 0; j < cline->l_used; j++)
-				wc += (isalnum(sp[j]) &&
+				wc += ((isalnum(sp[j]) || ispunct(sp[j])) &&
 				    (isspace(sp[j+1]) || !isprint(sp[j+1]))) ? 1 : 0;
 		}
 		cline = cline->l_fp;
